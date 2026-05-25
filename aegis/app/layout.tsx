@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { PhoneFrame } from "@/components/phone-frame";
+import { AlertsProvider } from "@/components/alerts-store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,9 @@ export default function RootLayout({
         <div className="aurora-stage">
           <div className="aurora-blob" />
         </div>
-        <PhoneFrame>{children}</PhoneFrame>
+        <PhoneFrame>
+          <AlertsProvider>{children}</AlertsProvider>
+        </PhoneFrame>
       </body>
     </html>
   );

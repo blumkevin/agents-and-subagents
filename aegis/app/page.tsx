@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Video, Footprints, Car, ShieldCheck, Cctv, Users } from "lucide-react";
 import { Glass, SectionTitle } from "@/components/glass";
-import { QuickAction, AlertRow, ListLink, Pill } from "@/components/ui";
-import { alertIcon } from "@/components/icons";
-import { building, alerts } from "@/lib/mock-data";
+import { QuickAction, ListLink, Pill } from "@/components/ui";
+import { AlertsList } from "@/components/alerts-list";
+import { building } from "@/lib/mock-data";
 
 export default function HomePage() {
   return (
@@ -53,11 +53,7 @@ export default function HomePage() {
       >
         Recent activity
       </SectionTitle>
-      <div className="flex flex-col gap-2.5">
-        {alerts.slice(0, 3).map((a) => (
-          <AlertRow key={a.id} alert={a} Icon={alertIcon(a.kind)} />
-        ))}
-      </div>
+      <AlertsList limit={3} />
     </div>
   );
 }

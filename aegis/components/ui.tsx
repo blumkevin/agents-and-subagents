@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { LucideIcon, ChevronRight } from "lucide-react";
 import { Glass } from "./glass";
-import { SecurityAlert } from "@/lib/mock-data";
 
 export function Pill({ children, color = "var(--ink)" }: { children: ReactNode; color?: string }) {
   return (
@@ -45,33 +44,6 @@ export function QuickAction({
         </div>
       </Glass>
     </Link>
-  );
-}
-
-const sevColor: Record<SecurityAlert["severity"], string> = {
-  critical: "var(--red)",
-  warning: "var(--orange)",
-  info: "var(--cyan)",
-};
-
-export function AlertRow({ alert, Icon }: { alert: SecurityAlert; Icon: LucideIcon }) {
-  const color = sevColor[alert.severity];
-  return (
-    <Glass className="flex items-center gap-3.5 p-3.5">
-      <div
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
-        style={{ background: `${color}26` }}
-      >
-        <Icon size={21} color={color} strokeWidth={2.1} />
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between gap-2">
-          <p className="truncate text-[14.5px] font-semibold">{alert.title}</p>
-          <span className="shrink-0 text-[11px] text-ink/45">{alert.time}</span>
-        </div>
-        <p className="truncate text-[12.5px] text-ink/55">{alert.location}</p>
-      </div>
-    </Glass>
   );
 }
 
