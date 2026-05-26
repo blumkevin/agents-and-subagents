@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Aegis — Liquid Glass design system
+   Apple-inspired translucent material, dark security aesthetic
+   ============================================================ */
+
+:root {
+  /* Surface + ink */
+  --ink: #f5f7fa;
+  --ink-dim: rgba(245, 247, 250, 0.62);
+  --ink-faint: rgba(245, 247, 250, 0.38);
+
+  /* System accents (Apple-like) */
+  --blue: #0a84ff;
+  --cyan: #64d2ff;
+  --green: #30d158;
+  --orange: #ff9f0a;
+  --red: #ff453a;
+  --violet: #bf5af2;
+
+  /* Glass material */
+  --glass-fill: rgba(255, 255, 255, 0.10);
+  --glass-fill-strong: rgba(255, 255, 255, 0.16);
+  --glass-stroke: rgba(255, 255, 255, 0.22);
+  --glass-stroke-soft: rgba(255, 255, 255, 0.10);
+
+  --radius: 26px;
+  --radius-sm: 16px;
+  --radius-lg: 34px;
+
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-blue: var(--blue);
+  --color-cyan: var(--cyan);
+  --color-green: var(--green);
+  --color-orange: var(--orange);
+  --color-red: var(--red);
+  --color-violet: var(--violet);
+  --font-sans: var(--font-geist-sans);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  background: #05060a;
+  letter-spacing: -0.01em;
+}
+
+/* ----- Aurora backdrop (what the glass refracts) ----- */
+.aurora-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 800px at 50% -10%, #11203f 0%, transparent 60%),
+    linear-gradient(180deg, #070a14 0%, #05060a 100%);
+  z-index: 0;
+}
+.aurora-stage::before,
+.aurora-stage::after {
+  content: "";
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+.aurora-stage::before {
+  background: radial-gradient(circle, var(--blue) 0%, transparent 60%);
+  top: -18vmax;
+  left: -10vmax;
+  animation: drift1 22s ease-in-out infinite alternate;
+}
+.aurora-stage::after {
+  background: radial-gradient(circle, var(--violet) 0%, transparent 60%);
+  bottom: -22vmax;
+  right: -12vmax;
+  animation: drift2 26s ease-in-out infinite alternate;
+}
+.aurora-blob {
+  position: absolute;
+  width: 44vmax;
+  height: 44vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, var(--cyan) 0%, transparent 60%);
+  top: 30%;
+  left: 35%;
+  animation: drift3 30s ease-in-out infinite alternate;
+}
+@keyframes drift1 { to { transform: translate(14vmax, 10vmax) scale(1.15); } }
+@keyframes drift2 { to { transform: translate(-12vmax, -8vmax) scale(1.2); } }
+@keyframes drift3 { to { transform: translate(-10vmax, 6vmax) scale(0.9); } }
+
+/* ----- Core glass material ----- */
+.glass {
+  position: relative;
+  background: var(--glass-fill);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-stroke-soft);
+  border-radius: var(--radius);
+  box-shadow:
+    0 16px 50px -12px rgba(0, 0, 0, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.06),
+    inset 0 -10px 24px -16px rgba(120, 190, 255, 0.18);
+}
+/* specular sheen — the liquid-glass highlight */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.05) 28%,
+    rgba(255, 255, 255, 0) 55%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.glass-strong {
+  background: var(--glass-fill-strong);
+}
+.glass-tint-blue { background: linear-gradient(160deg, rgba(10,132,255,0.30), rgba(10,132,255,0.10)); }
+.glass-tint-red { background: linear-gradient(160deg, rgba(255,69,58,0.34), rgba(255,69,58,0.12)); }
+.glass-tint-green { background: linear-gradient(160deg, rgba(48,209,88,0.30), rgba(48,209,88,0.10)); }
+
+/* ----- Pressable feedback ----- */
+.pressable { transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.18s ease; }
+.pressable:active { transform: scale(0.96); filter: brightness(1.1); }
+
+/* ----- Misc ----- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  70% { transform: scale(1.6); opacity: 0; }
+  100% { opacity: 0; }
+}
+.sos-ring { animation: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+
+@keyframes rec-blink { 50% { opacity: 0.25; } }
+.rec-dot { animation: rec-blink 1.1s steps(1, end) infinite; }
+
+/* ----- Tactile grain overlay (premium depth) ----- */
+.aurora-stage::after {
+  opacity: 0.5;
+}
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ----- Orchestrated page-load reveal (staggered) ----- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+main > div > * {
+  animation: rise 0.62s cubic-bezier(0.22, 0.85, 0.25, 1) both;
+}
+main > div > *:nth-child(1) { animation-delay: 0.02s; }
+main > div > *:nth-child(2) { animation-delay: 0.08s; }
+main > div > *:nth-child(3) { animation-delay: 0.14s; }
+main > div > *:nth-child(4) { animation-delay: 0.20s; }
+main > div > *:nth-child(5) { animation-delay: 0.26s; }
+main > div > *:nth-child(6) { animation-delay: 0.32s; }
+main > div > *:nth-child(n + 7) { animation-delay: 0.38s; }
+
+@media (prefers-reduced-motion: reduce) {
+  main > div > *,
+  .aurora-stage::before,
+  .aurora-stage::after,
+  .aurora-blob { animation: none !important; }
+}
+
+/* ----- Hero light sweep ----- */
+.sweep { position: relative; overflow: hidden; }
+.sweep::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transform: skewX(-18deg);
+  animation: sweep-move 6.5s ease-in-out 1.2s infinite;
+  pointer-events: none;
+}
+@keyframes sweep-move {
+  0% { left: -60%; }
+  28%, 100% { left: 130%; }
+}

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Pre-commit hook: block commits that include secret-bearing files.
+# Takes 5 minutes to add. Prevents disasters.
+#
+# Install:  ln -sf ../../.claude/hooks/pre-commit .git/hooks/pre-commit
+#           (or copy it to .git/hooks/pre-commit and chmod +x)
+
+set -euo pipefail
+
+# Filename patterns that should never be committed.
+blocked_regex='(.*\.env(\.[^/]*)?|.*\.(key|pem)|(^|/)secrets\.json)$'
+
+staged="$(git diff --cached --name-only --diff-filter=ACM)"
+
+offenders=""
+while IFS= read -r file; do
+  [ -z "$file" ] && continue
+  if printf '%s\n' "$file" | grep -Eq "$blocked_regex"; then
+    offenders+="  $file"$'\n'
+  fi
+done <<< "$staged"
+
+if [ -n "$offenders" ]; then
+  echo "BLOCKED: refusing to commit files that look like secrets:" >&2
+  printf '%s' "$offenders" >&2
+  echo >&2
+  echo "If this is intentional, commit with --no-verify (not recommended)." >&2
+  exit 1
+fi
+
+exit 0
