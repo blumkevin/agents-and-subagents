@@ -13,7 +13,7 @@ export default function HomePage() {
         <h1 className="text-[28px] font-bold tracking-tight">Sofía</h1>
       </header>
 
-      <Glass tint="green" className="mt-4 overflow-hidden p-5">
+      <Glass tint="green" className="sweep mt-4 overflow-hidden p-5">
         <div className="flex items-start justify-between">
           <div>
             <p className="text-[13px] text-ink/60">{building.name}</p>

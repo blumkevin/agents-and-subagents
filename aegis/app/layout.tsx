@@ -25,6 +25,7 @@ export default function RootLayout({
         <div className="aurora-stage">
           <div className="aurora-blob" />
         </div>
+        <div className="grain" />
         <PhoneFrame>
           <AlertsProvider>{children}</AlertsProvider>
         </PhoneFrame>
