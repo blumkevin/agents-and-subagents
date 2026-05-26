@@ -18,7 +18,11 @@ export function TabBar() {
     <div className="absolute bottom-0 left-0 right-0 px-4 pb-7 pt-2 z-30">
       <nav
         className="glass glass-strong flex items-center justify-around rounded-[28px] px-2 py-2.5"
-        style={{ background: "rgba(7, 10, 18, 0.66)", borderColor: "rgba(255,255,255,0.16)" }}
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(12, 90, 175, 0.62) 0%, rgba(7, 38, 92, 0.72) 100%)",
+          borderColor: "rgba(120, 200, 255, 0.30)",
+        }}
       >
         {tabs.map(({ href, label, Icon }) => {
           const active = pathname === href;
